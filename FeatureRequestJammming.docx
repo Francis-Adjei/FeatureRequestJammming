@@ -1,0 +1,22 @@
+Feature Request: Search on “Enter”
+August 18th 2021
+
+OBJECTIVE
+To give the user the ability to search Spotify by pressing ‘enter’ instead of clicking ‘submit.’
+BACKGROUND 
+Currently, Jamming requires that a user click the “submit” button in order to search for their desired item. However, being able to search when pressing the “enter” key is a much more acceptable user experience. The feature accomplishes the following:
+●	Allows the user to get search results without having to navigate their mouse to the actual button.
+●	Saves the user time when searching.
+●	The function should only start when ‘enter’ is actually depressed and not when the term is updated.
+
+TECHNICAL DESIGN
+A new event handling method will need to be added to the Searchbar component that identifies when the enter key is pressed. handleKeyPress will trigger the search(term) method in the App component which will trigger the getAccessToken and/or search methods in the Spotify.js.
+To implement this feature, we will need to call a handler function (onKeyPress) that checks the event until event.key === “enter.”  If the condition is true, then the method will call this.props.onSearch(this.state.term) which will initiate the Spotify Search function.
+We will then bind the method to this in the constructor of the Searchbar component. Lastly, we will add a onKeyDown event handler to the <input /> tag and call {{this.handleKeyPress}} to “listen” for the event.
+The listener will activate when a pressed key equals “Enter” which will lead to the “Results” box to be filled with up to 50 tracks from the Spotify Library.
+
+CAVEATS
+onKeyPress
+This could be used in place of onKeyDown however, since we are trying to react to a single key press and not a character action, we should not consider this as a viable option.
+onKeyUp.
+This could be used in place of onKeyDown which will take place after the enter key has been released. Since this event fires after any new characters are added to the field it is not as desirable to onKeyDown which will search using the current state of term when the key is depressed, which we can assume is what the user actually wants to search.
